@@ -41,3 +41,11 @@ jobs:
         with:
           name: playground-assets
           path: assets
+      - name: Create release with artifact bundle.
+        uses: softprops/action-gh-release@v1
+        with:
+          files: assets
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: 'test-bundle'
+          title: ${{ github.sha }}
+          body: "Generated assets for playground."
