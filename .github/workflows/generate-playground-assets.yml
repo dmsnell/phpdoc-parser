@@ -46,6 +46,5 @@ jobs:
         with:
           files: assets
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag: 'test-bundle'
-          title: ${{ github.sha }}
+          tag-name: 'test-bundle'
           body: "Generated assets for playground."
