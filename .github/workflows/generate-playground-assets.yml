@@ -11,14 +11,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: 'phpdoc-parser'
-      - name: Log directory structure inside CI environment.
-        run: find . && tree
-      - name: Change into phpdoc-parser directory.
-        run: cd phpdoc-parser
       - name: Install composer packages.
         uses: php-actions/composer@v6
-      - name: Revert to previous directory.
-        run: cd ..
+        run: composer install
+        working-directory: './phpdoc-parser'
       - name: Clone WordPress sourcecode.
         uses: actions/checkout@v4
         with:
