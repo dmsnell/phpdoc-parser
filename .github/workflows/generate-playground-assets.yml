@@ -11,9 +11,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: 'phpdoc-parser'
-      - name: Install composer packages.
-        uses: php-actions/composer@v6
+
+      - name: Install composer
+        run: curl --show-error --silent https://getcomposer.org/installer | php
+
+      - name: Install composer dependencies
         working-directory: './phpdoc-parser'
+        run: php composer.phar install
+
       - name: Clone WordPress sourcecode.
         uses: actions/checkout@v4
         with:
