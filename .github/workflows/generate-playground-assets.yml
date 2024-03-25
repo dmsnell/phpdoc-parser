@@ -12,6 +12,12 @@ jobs:
         with:
           path: 'phpdoc-parser'
 
+      - name: "Install PHP with extensions"
+        uses: shivammathur/setup-php@v1
+        with:
+          # This job will be running on php7.4 version
+          php-version: '7.4'
+
       - name: Install composer
         run: curl --show-error --silent https://getcomposer.org/installer | php
 
