@@ -1,0 +1,50 @@
+name: Generate Playground Assets
+
+on: [ push ]
+
+jobs:
+  generate-playground-assets:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone phpdoc-parser source.
+        uses: actions/checkout@v4
+        with:
+          path: 'phpdoc-parser'
+
+      - name: "Install PHP with extensions"
+        uses: shivammathur/setup-php@v1
+        with:
+          # This job will be running on php7.4 version
+          php-version: '7.4'
+
+      - name: Install composer
+        run: curl --show-error --silent https://getcomposer.org/installer | php
+
+      - name: Install composer dependencies
+        working-directory: './phpdoc-parser'
+        run: composer install
+
+      - name: Clone WordPress sourcecode.
+        uses: actions/checkout@v4
+        with:
+          repository: 'WordPress/wordpress-develop'
+          path: 'wordpress-develop'
+      - name: Copy built assets into ZIP for extraction inside Playground.
+        run: |
+          mkdir -p assets/vendor
+          mkdir -p assets/wp-content/uploads/wordpress-develop
+          cp -r wordpress-develop/src assets/wp-content/uploads/wordpress-develop
+          cp -r phpdoc-parser/vendor assets/vendor
+      - name: Create downloadable artifact.
+        uses: actions/upload-artifact@v4
+        with:
+          name: playground-assets
+          path: assets
+      - name: Create release with artifact bundle.
+        uses: softprops/action-gh-release@v1
+        with:
+          files: assets
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: 'test-bundle'
+          body: "Generated assets for playground."
